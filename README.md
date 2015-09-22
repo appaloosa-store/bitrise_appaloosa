@@ -1,0 +1,1 @@
+# bitrise_appalossa
