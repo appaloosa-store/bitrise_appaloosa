@@ -121,37 +121,3 @@ inputs:
     is_required: false
     is_expand: true
     is_dont_change_value: false
-outputs:
-- APPALOOSA_DEPLOY_IPA: ''
-  opts:
-    title: BINARY_PATH
-- APPALOOSA_API_KEY: ''
-  opts:
-    title: APPALOOSA_API_KEY
-- USER_EMAIL: ''
-  opts:
-    title: USER_EMAIL
-- DESCRIPTION: ''
-  opts:
-    title: DESCRIPTION
-- STORE_ID: ''
-  opts:
-    title: STORE_ID
-- GROUP_IDS: ''
-  opts:
-    title: GROUP_IDS
-- SCREENSHOT1: ''
-  opts:
-    title: SCREENSHOT 1
-- SCREENSHOT2: ''
-  opts:
-    title: SCREENSHOT 2
-- SCREENSHOT3: ''
-  opts:
-    title: SCREENSHOT 3
-- SCREENSHOT4: ''
-  opts:
-    title: SCREENSHOT 4
-- SCREENSHOT5: ''
-  opts:
-    title: SCREENSHOT 5
