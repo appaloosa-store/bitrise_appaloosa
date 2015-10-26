@@ -7,8 +7,8 @@ THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 content_type=""
 date="$(LC_ALL=C date -u +"%a, %d %b %Y %X %z")"
-md5="$(openssl md5 -binary < "$binary" | base64)"
-SIG_PATH_GROUP_KEY_CPATH=`curl -H "Content-Type: application/json" -X GET --data '{"store_id":"'"$STORE_ID"'", "md5":"'"$md5"'", "date":"'"$date"'", "group_ids":"'"$GROUP"'" }' $APPALOOSA_SERVER/$STORE_ID/bitrise_binaries/get_signature?api_key=$APPALOOSA_API_KEY`
+md5="$(openssl md5 -binary < "$BITRISE_IPA_PATH" | base64)"
+SIG_PATH_GROUP_KEY_CPATH=`curl -H "Content-Type: application/json" -X GET --data '{"store_id":"'"$store_id"'", "md5":"'"$md5"'", "date":"'"$date"'", "group_ids":"'"$GROUP"'" }' $APPALOOSA_SERVER/$store_id/bitrise_binaries/get_signature?api_key=$appaloosa_api_key`
 
 echo $SIG_PATH_GROUP_KEY_CPATH > filejson
 
@@ -27,7 +27,7 @@ if [[ -n "$GROUP" ]];then
   exit 1
 fi
 
-curl -T $binary $path \
+curl -T $BITRISE_IPA_PATH $path \
     -H "Date: $date" \
     -H "Authorization: AWS $access_key:$sig" \
     -H "Content-Type: $content_type" \

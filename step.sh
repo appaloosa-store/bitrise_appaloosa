@@ -1,14 +1,14 @@
-echo "BINARY PATH :  ${BITRISE_IPA_PATH}"
-echo "DESCRIPTION :  ${DESCRIPTION}"
-echo "GROUP IDS   :  ${GROUP_IDS}"
-echo "API KEY     :  ${APPALOOSA_API_KEY}"
-echo "STORE ID    :  ${STORE_ID}"
-echo "USER EMAIL  :  ${USER_EMAIL}"
-echo "SCREENSHOT1 :  ${SCREENSHOT1}"
-echo "SCREENSHOT2 :  ${SCREENSHOT2}"
-echo "SCREENSHOT3 :  ${SCREENSHOT3}"
-echo "SCREENSHOT4 :  ${SCREENSHOT4}"
-echo "SCREENSHOT5 :  ${SCREENSHOT5}"
+echo "binary path :  ${bitrise_ipa_path}"
+echo "description :  ${description}"
+echo "group ids   :  ${group_ids}"
+echo "api key     :  ${appaloosa_api_key}"
+echo "store id    :  ${store_id}"
+echo "user email  :  ${user_email}"
+echo "screenshot1 :  ${screenshot1}"
+echo "screenshot2 :  ${screenshot2}"
+echo "screenshot3 :  ${screenshot3}"
+echo "screenshot4 :  ${screenshot4}"
+echo "screenshot5 :  ${screenshot5}"
 
 function getJSONValue {    
     cat "$1" | grep "$2" | sed "s/.*\"$2\"[^:]*:[^\"]*\"\([^\"]*\)\".*/\1/"
@@ -20,28 +20,23 @@ THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APPALOOSA_SERVER="https://www.appaloosa-store.com/api/v1"
 
 # Error
-if [ -z "$USER_EMAIL" ] && [ -z "$APPALOOSA_API_KEY" ]; then
+if [ -z "$user_email" ] && [ -z "$appaloosa_api_key" ]; then
   echo "ERROR: An email address or your API key are required"
   exit 1
 fi
 # email and API are both provided
-if [ -n "$USER_EMAIL" ] && [ -n "$APPALOOSA_API_KEY" ]; then
+if [ -n "$user_email" ] && [ -n "$appaloosa_api_key" ]; then
   echo "WARNING: You provided an email and an API key, we will consider your API key"
 # API key is given without store id
 fi
-if [ -z "$STORE_ID" ] && [ -n "$APPALOOSA_API_KEY" ]; then
+if [ -z "$store_id" ] && [ -n "$appaloosa_api_key" ]; then
   echo "ERROR: store id is required"
   exit 1
 fi
 
-# copy binary to generic file
-cp $BITRISE_IPA_PATH .
-mv /Users/vagrant/git/*.ipa binary.ipa
-binary="binary.ipa"
-
 # With e-mail address
-if [[ -z "$APPALOOSA_API_KEY" ]] && [[ -n "$USER_EMAIL" ]];then
-  RESP=`curl -H "Content-Type: application/json" -X POST $APPALOOSA_SERVER/bitrise_binaries/create_an_account?email=$USER_EMAIL`
+if [[ -z "$appaloosa_api_key" ]] && [[ -n "$user_email" ]];then
+  RESP=`curl -H "Content-Type: application/json" -X POST $APPALOOSA_SERVER/bitrise_binaries/create_an_account?email=$user_email`
 
   #email unique?
   echo $RESP > response_account
@@ -58,7 +53,7 @@ fi
 # upload on S3
 source $THIS_SCRIPT_DIR/upload_to_s3.sh
 # get ipa_path
-S3_IPA_PATH=`curl -H "Content-Type: application/json" -X GET --data '{"store_id":"'"$STORE_ID"'", "key":"'"$path"'"}' $APPALOOSA_SERVER/$STORE_ID/bitrise_binaries/url_for_download?api_key=$APPALOOSA_API_KEY`
+S3_IPA_PATH=`curl -H "Content-Type: application/json" -X GET --data '{"store_id":"'"$store_id"'", "key":"'"$path"'"}' $APPALOOSA_SERVER/$store_id/bitrise_binaries/url_for_download?api_key=$appaloosa_api_key`
 echo $S3_IPA_PATH > path_url
 
 echo $S3_IPA_PATH > s3_path
@@ -72,7 +67,7 @@ if [[ -n $ERR ]];then
 fi
 
 # upload on Appaloosa
-UPLOAD=`curl -H "Content-Type: application/json" -X POST --data '{ "application": { "binary_path": "'"$S3_IPA_PATH"'", "description": "'"$DESCRIPTION"'", "group_ids": "'"$GROUP_IDS"'", "screenshot1": "'"$SCREENSHOT1"'", "screenshot2": "'"$SCREENSHOT2"'", "screenshot3": "'"$SCREENSHOT3"'", "screenshot4": "'"$SCREENSHOT4"'", "screenshot5": "'"$SCREENSHOT5"'"}}' $APPALOOSA_SERVER/$STORE_ID/applications/upload?api_key=$APPALOOSA_API_KEY`
+UPLOAD=`curl -H "Content-Type: application/json" -X POST --data '{ "application": { "binary_path": "'"$S3_IPA_PATH"'", "description": "'"$description"'", "group_ids": "'"$group_ids"'", "screenshot1": "'"$screenshot1"'", "screenshot2": "'"$screenshot2"'", "screenshot3": "'"$screenshot3"'", "screenshot4": "'"$screenshot4"'", "screenshot5": "'"$screenshot5"'"}}' $APPALOOSA_SERVER/$store_id/applications/upload?api_key=$appaloosa_api_key`
 
 echo $UPLOAD > upload
 ERR=`getJSONValue upload errors`
@@ -81,7 +76,7 @@ if [[ -n $ERR ]];then
   exit 1
 fi
 
-unset APPALOOSA_API_KEY
-unset STORE_ID
+unset appaloosa_api_key
+unset store_id
 
 exit $?

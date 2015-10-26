@@ -25,7 +25,7 @@ is_always_run: false
 is_skippable: false
 run_if: ''
 inputs:
-- BITRISE_IPA_PATH: "$BITRISE_IPA_PATH"
+- bitrise_ipa_path: "$BITRISE_IPA_PATH"
   opts:
     title: IPA PATH
     description: 'This is the variable of your IPA path on Bitrise'
@@ -33,7 +33,7 @@ inputs:
     is_required: true
     is_expand: true
     is_dont_change_value: false
-- USER_EMAIL:
+- user_email:
   opts:
     title: User Email Address
     description: |-
@@ -45,7 +45,7 @@ inputs:
     is_required: false
     is_expand: true
     is_dont_change_value: false
-- APPALOOSA_API_KEY:
+- appaloosa_api_key:
   opts:
     title: User API Key
     description: "***Only if you are already registered on Appaloosa***"
@@ -53,7 +53,7 @@ inputs:
     is_required: false
     is_expand: true
     is_dont_change_value: false
-- STORE_ID: 
+- store_id: 
   opts:
     title: Store ID
     description: |-
@@ -64,7 +64,7 @@ inputs:
     is_required: false
     is_expand: true
     is_dont_change_value: false
-- SCREENSHOT1: 
+- screenshot1: 
   opts:
     title: SCREENSHOT 1
     description: 'URL (jpg or png)'
@@ -72,7 +72,7 @@ inputs:
     is_required: false
     is_expand: true
     is_dont_change_value: false
-- SCREENSHOT2:
+- screenshot2:
   opts:
     title: SCREENSHOT 2
     description: 'URL (jpg or png)'
@@ -80,7 +80,7 @@ inputs:
     is_required: false
     is_expand: true
     is_dont_change_value: false
-- SCREENSHOT3:
+- screenshot3:
   opts:
     title: SCREENSHOT 3
     description: 'URL (jpg or png)'
@@ -88,7 +88,7 @@ inputs:
     is_required: false
     is_expand: true
     is_dont_change_value: false
-- SCREENSHOT4:
+- screenshot4:
   opts:
     title: SCREENSHOT 4
     description: 'URL (jpg or png)'
@@ -96,7 +96,7 @@ inputs:
     is_required: false
     is_expand: true
     is_dont_change_value: false
-- SCREENSHOT5:
+- screenshot5:
   opts:
     title: SCREENSHOT 5
     description: 'URL (jpg or png)'
@@ -104,7 +104,7 @@ inputs:
     is_required: false
     is_expand: true
     is_dont_change_value: false
-- DESCRIPTION:
+- description:
   opts:
     title: Description
     description: 'Description or changelog for your application'
@@ -112,7 +112,7 @@ inputs:
     is_required: false
     is_expand: true
     is_dont_change_value: false
-- GROUP_IDS:
+- group_ids:
   opts:
     title: Group IDs
     description: |-
