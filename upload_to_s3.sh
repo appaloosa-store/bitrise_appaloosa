@@ -8,7 +8,7 @@ THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 content_type=""
 date="$(LC_ALL=C date -u +"%a, %d %b %Y %X %z")"
 md5="$(openssl md5 -binary < "$bitrise_ipa_path" | base64)"
-SIG_PATH_GROUP_KEY_CPATH=`curl -H "Content-Type: application/json" -X GET --data '{"store_id":"'"$store_id"'", "md5":"'"$md5"'", "date":"'"$date"'", "group_ids":"'"$GROUP"'" }' $APPALOOSA_SERVER/$store_id/bitrise_binaries/get_signature?api_key=$appaloosa_api_key`
+SIG_PATH_GROUP_KEY_CPATH=`curl -H "Content-Type: application/json" -X GET --data '{"store_id":"'"$store_id"'", "md5":"'"$md5"'", "date":"'"$date"'", "group_ids":"'"$GROUP"'" }' $APPALOOSA_SERVER/$store_id/bitrise_binaries/generate_signature?api_key=$appaloosa_api_key`
 
 echo $SIG_PATH_GROUP_KEY_CPATH > filejson
 

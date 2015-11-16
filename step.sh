@@ -36,7 +36,7 @@ fi
 
 # With e-mail address
 if [[ -z "$appaloosa_api_key" ]] && [[ -n "$user_email" ]];then
-  RESP=`curl -H "Content-Type: application/json" -X POST $APPALOOSA_SERVER/bitrise_binaries/create_an_account?email=$user_email`
+  RESP=`curl -H "Content-Type: application/json" -X POST $APPALOOSA_SERVER/web_services/create_an_account?email=$user_email`
 
   #email unique?
   echo $RESP > response_account
@@ -53,7 +53,7 @@ fi
 # upload on S3
 source $THIS_SCRIPT_DIR/upload_to_s3.sh
 # get ipa_path
-S3_IPA_PATH=`curl -H "Content-Type: application/json" -X GET --data '{"store_id":"'"$store_id"'", "key":"'"$path"'"}' $APPALOOSA_SERVER/$store_id/bitrise_binaries/url_for_download?api_key=$appaloosa_api_key`
+S3_IPA_PATH=`curl -H "Content-Type: application/json" -X GET --data '{"store_id":"'"$store_id"'", "key":"'"$path"'"}' $APPALOOSA_SERVER/$store_id/web_services/url_for_download?api_key=$appaloosa_api_key`
 echo $S3_IPA_PATH > path_url
 
 echo $S3_IPA_PATH > s3_path
@@ -67,7 +67,7 @@ if [[ -n $ERR ]];then
 fi
 
 # upload on Appaloosa
-UPLOAD=`curl -H "Content-Type: application/json" -X POST --data '{ "application": { "binary_path": "'"$S3_IPA_PATH"'", "description": "'"$description"'", "group_ids": "'"$group_ids"'", "screenshot1": "'"$screenshot1"'", "screenshot2": "'"$screenshot2"'", "screenshot3": "'"$screenshot3"'", "screenshot4": "'"$screenshot4"'", "screenshot5": "'"$screenshot5"'"}}' $APPALOOSA_SERVER/$store_id/applications/upload?api_key=$appaloosa_api_key`
+UPLOAD=`curl -H "Content-Type: application/json" -X POST --data '{ "application": { "binary_path": "'"$S3_IPA_PATH"'", "description": "'"$description"'", "group_ids": "'"$group_ids"'", "screenshot1": "'"$screenshot1"'", "screenshot2": "'"$screenshot2"'", "screenshot3": "'"$screenshot3"'", "screenshot4": "'"$screenshot4"'", "screenshot5": "'"$screenshot5"'"}, "provider": "bitrise"}' $APPALOOSA_SERVER/$store_id/applications/upload?api_key=$appaloosa_api_key`
 
 echo $UPLOAD > upload
 ERR=`getJSONValue upload errors`
