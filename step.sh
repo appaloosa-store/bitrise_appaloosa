@@ -36,7 +36,7 @@ fi
 
 # With e-mail address
 if [[ -z "$appaloosa_api_key" ]] && [[ -n "$user_email" ]];then
-  RESP=`curl -H "Content-Type: application/json" -X POST $APPALOOSA_SERVER/web_services/create_an_account?email=$user_email`
+  RESP=`curl -H "Content-Type: application/json" -X POST $APPALOOSA_SERVER/upload_services/create_an_account?email=$user_email`
 
   #email unique?
   echo $RESP > response_account
@@ -53,7 +53,7 @@ fi
 # upload on S3
 source $THIS_SCRIPT_DIR/upload_to_s3.sh
 # get ipa_path
-S3_IPA_PATH=`curl -H "Content-Type: application/json" -X GET --data '{"store_id":"'"$store_id"'", "key":"'"$path"'"}' $APPALOOSA_SERVER/$store_id/web_services/url_for_download?api_key=$appaloosa_api_key`
+S3_IPA_PATH=`curl -H "Content-Type: application/json" -X GET --data '{"store_id":"'"$store_id"'", "key":"'"$path"'"}' $APPALOOSA_SERVER/$store_id/upload_services/url_for_download?api_key=$appaloosa_api_key`
 echo $S3_IPA_PATH > path_url
 
 echo $S3_IPA_PATH > s3_path
