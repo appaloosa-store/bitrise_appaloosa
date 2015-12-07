@@ -12,7 +12,7 @@ SIG_PATH_GROUP_KEY_CPATH=`curl -H "Content-Type: application/json" -X GET --data
 
 echo $SIG_PATH_GROUP_KEY_CPATH > filejson
 
-if [[ $SIG_PATH_GROUP_KEY_CPATH == 'null' ]];then
+if [[ $SIG_PATH_GROUP_KEY_CPATH == '' ]];then
     echo 'Problem occured, check these params: api_key, store_id, group_ids'
     exit 1  
 fi
