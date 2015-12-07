@@ -46,9 +46,9 @@ if [[ -z "$appaloosa_api_key" ]] && [[ -n "$user_email" ]];then
     echo $ERR
     exit 1
   fi
-  echo response_account
-  APPALOOSA_API_KEY=`getJSONValue response_account api_key`
-  STORE_ID=`getJSONValue response_account store_id`
+
+  appaloosa_api_key=`getJSONValue response_account api_key`
+  store_id=`getJSONValue response_account store_id`
 fi
 
 # upload on S3
