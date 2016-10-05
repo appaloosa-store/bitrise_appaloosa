@@ -1,3 +1,4 @@
+#!/usr/bin
 
 function getJSONValue {    
     cat "$1" | grep "$2" | sed "s/.*\"$2\"[^:]*:[^\"]*\"\([^\"]*\)\".*/\1/"
