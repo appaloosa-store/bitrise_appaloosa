@@ -7,8 +7,8 @@ description: |
 
   This step requires an Appaloosa-Store account or an email address to create your account
 website: https://www.appaloosa-store.com
-source_code_url: https://github.com/appaloosa-store/bitrise_appalossa
-support_url: https://github.com/appaloosa-store/bitrise_appalossa/issues
+source_code_url: https://github.com/appaloosa-store/bitrise_appaloosa
+support_url: https://github.com/appaloosa-store/bitrise_appaloosa/issues
 host_os_tags:
 - osx-10.9
 - osx-10.10
