@@ -105,8 +105,16 @@ inputs:
 - description:
   opts:
     title: Description
-    description: 'Description or changelog for your application'
+    description: 'Description for your application'
     summary: 'This is the description for your application. You can have a different description for each version for your application.'
+    is_required: false
+    is_expand: true
+    is_dont_change_value: false
+- changelog:
+  opts:
+    title: Changelog
+    description: 'Changelog for your application'
+    summary: 'This is the changelog for your application. You can have a different changelog for each version for your application.'
     is_required: false
     is_expand: true
     is_dont_change_value: false

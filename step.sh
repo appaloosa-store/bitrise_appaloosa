@@ -1,3 +1,5 @@
+#!/usr/bin
+
 echo "binary path :  ${bitrise_ipa_path}"
 echo "description :  ${description}"
 echo "group ids   :  ${group_ids}"
@@ -9,6 +11,7 @@ echo "screenshot2 :  ${screenshot2}"
 echo "screenshot3 :  ${screenshot3}"
 echo "screenshot4 :  ${screenshot4}"
 echo "screenshot5 :  ${screenshot5}"
+echo "changelog   :  ${changelog}"
 
 function getJSONValue {    
     cat "$1" | grep "$2" | sed "s/.*\"$2\"[^:]*:[^\"]*\"\([^\"]*\)\".*/\1/"
@@ -68,7 +71,7 @@ if [[ -n $ERR ]];then
 fi
 
 # upload on Appaloosa
-UPLOAD=`curl -H "Content-Type: application/json" -X POST --data '{ "application": { "binary_path": "'"$S3_IPA_PATH"'", "description": "'"$description"'", "group_ids": "'"$group_ids"'", "screenshot1": "'"$screenshot1"'", "screenshot2": "'"$screenshot2"'", "screenshot3": "'"$screenshot3"'", "screenshot4": "'"$screenshot4"'", "screenshot5": "'"$screenshot5"'"}, "provider": "bitrise"}' $APPALOOSA_SERVER/$store_id/applications/upload?api_key=$appaloosa_api_key`
+UPLOAD=`curl -H "Content-Type: application/json" -X POST --data '{ "application": { "binary_path": "'"$S3_IPA_PATH"'", "description": '"$(ruby json_dumper.rb $description)"', "group_ids": "'"$group_ids"'", "screenshot1": "'"$screenshot1"'", "screenshot2": "'"$screenshot2"'", "screenshot3": "'"$screenshot3"'", "screenshot4": "'"$screenshot4"'", "screenshot5": "'"$screenshot5"'", "changelog": '"$(ruby json_dumper.rb $changelog)"'}, "provider": "bitrise"}' $APPALOOSA_SERVER/$store_id/applications/upload?api_key=$appaloosa_api_key`
 
 echo $UPLOAD > upload
 ERR=`getJSONValue upload errors`
