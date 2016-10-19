@@ -1,2 +1,2 @@
 require 'json'
-p JSON.dump(ARGV.first)
+puts JSON.dump(ARGV.first)
