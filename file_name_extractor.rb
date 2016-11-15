@@ -11,7 +11,7 @@ class FilenameExtractor
     end
 
     def filename_from_path(path)
-      extname = File.extname(path)
+      extname = File.extname(path).downcase
       raise "[ERROR] extension is not supported: #{extname}" unless SUPPORTED_EXTENSIONS.include?(extname)
       File.basename(path)
     end
