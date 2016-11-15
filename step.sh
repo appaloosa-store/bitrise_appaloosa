@@ -24,7 +24,7 @@ APPALOOSA_SERVER="https://www.appaloosa-store.com/api/v1"
 
 # Error
 if [ -z "$user_email" ] && [ -z "$appaloosa_api_key" ]; then
-  echo "ERROR: An email address or your API key are required"
+  echo "ERROR: An email address or your API key is required"
   exit 1
 fi
 # email and API are both provided
@@ -73,6 +73,7 @@ fi
 # upload on Appaloosa
 UPLOAD=`curl -H "Content-Type: application/json" -X POST --data '{ "application": { "binary_path": "'"$S3_IPA_PATH"'", "description": '"$(ruby $THIS_SCRIPT_DIR/json_dumper.rb "$description")"', "group_ids": "'"$group_ids"'", "screenshot1": "'"$screenshot1"'", "screenshot2": "'"$screenshot2"'", "screenshot3": "'"$screenshot3"'", "screenshot4": "'"$screenshot4"'", "screenshot5": "'"$screenshot5"'", "changelog": '"$(ruby $THIS_SCRIPT_DIR/json_dumper.rb "$changelog")"'}, "provider": "bitrise"}' $APPALOOSA_SERVER/$store_id/applications/upload?api_key=$appaloosa_api_key`
 
+echo $UPLOAD
 echo $UPLOAD > upload
 ERR=`getJSONValue upload errors`
 if [[ -n $ERR ]];then

@@ -37,45 +37,41 @@ trigger_map:
 
 workflows:
   test:
-    description: |-
-      You can use this workflow by running: bitrise run test
-      Or by triggering: bitrise trigger test
-      If you use trigger, you can trigger it with any pattern
-        which starts with 'test', like: bitrise trigger test-1
-        or: bitrise trigger test/1
-      You can define the mapping between trigger patterns and
-        workflows in the 'trigger_map' section.
     steps:
-    - timestamp:
-        outputs:
-        - UNIX_TIMESTAMP:
-        - ISO_DATETIME:
-    - script:
-        title: Hello Bitrise!
+    - change-workdir:
+        title: Switch working dir to test / _tmp dir
+        description: |-
+          To prevent step testing issues, like referencing relative
+          files with just './some-file' in the step's code, which would
+          work for testing the step from this directory directly
+          but would break if the step is included in another `bitrise.yml`.
+        run_if: true
         inputs:
-        - content: |-
-            #!/bin/bash
-            echo "Welcome to Bitrise!"
-            echo "Current time is: ${ISO_DATETIME}"
-            echo
-            echo "Your specified Project Title is: ${BITRISE_APP_TITLE}"
-            echo " and the primary development branch is: ${BITRISE_DEV_BRANCH}"
-  fallback:
-    description: |-
-      This is a fallback workflow. As defined in the 'trigger_map' section
-      this workflow will be selected in any case if you run 'bitrise trigger'
-      with any pattern which does not match any other in
-      the 'tigger_map' definition. For example 'bitrise trigger my-custom-pattern'
-      or 'bitrise trigger my/custom/pattern' will both select this workflow.
-    steps:
-    - script:
-        title: Fallback
+        - path: ./_tmp
+        - is_create_path: true
+    - path::./:
+        title: Step Test
+        description: |-
+          The example input has a default value,
+          you can overwrite it if you want to, just like we did below,
+          but the step would use the default value specified in the `step.yml`
+          file if you would not specify another value.
+        run_if: true
         inputs:
-        - content: |-
-            #!/bin/bash
-            echo "This is a the fallback workflow, used"
-            echo " if you 'bitrise trigger' a build but the pattern"
-            echo " does not match any other pattern in the trigger_map"
+        - appaloosa_api_key: $appaloosa_api_key
+        - store_id: $store_id
+        - bitrise_ipa_path: $bitrise_ipa_path
+        - changelog: |
+            hello Bit
+            rise'\
+            a change&log for you! "add
+            some "quote fun
+        - description: |
+            hello Bit
+            rise\]''
+            a des%&*cription for you! "add
+            some "quote fun
+
 
 # ----------------------------------------------------------------
   # --- workflows to Share this step into a Step Library

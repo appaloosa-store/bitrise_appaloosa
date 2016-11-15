@@ -1,9 +1,11 @@
 title: Publish to Appaloosa Store
 summary: This step allows you to publish your application to your private app store on Appaloosa Store
 description: |
-  Bitrise Step to Deploy an iOS IPA to Appaloosa-Store.
+  Bitrise Step to Deploy an iOS .ipa or Android .apk to Appaloosa-Store.
 
-  Required: an Xcode Archive Step should run before this Step!
+  Required:
+    For iOS: an Xcode Archive Step should run before this Step!
+    For Android: an apk should exist
 
   This step requires an Appaloosa-Store account or an email address to create your account
 website: https://www.appaloosa-store.com
@@ -14,6 +16,7 @@ host_os_tags:
 - osx-10.10
 project_type_tags:
 - ios
+- android
 type_tags:
 - deploy
 - appaloosa
@@ -25,8 +28,8 @@ run_if: ''
 inputs:
 - bitrise_ipa_path: "$BITRISE_IPA_PATH"
   opts:
-    title: IPA PATH
-    description: 'This is the variable of your IPA path on Bitrise'
+    title: BINARY PATH
+    description: 'This is the path to your binary on Bitrise'
     summary: ''
     is_required: true
     is_expand: true
