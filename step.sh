@@ -1,5 +1,6 @@
 #!/usr/bin
 
+echo "end path    :  ${end_path}"
 echo "binary path :  ${bitrise_ipa_path}"
 echo "description :  ${description}"
 echo "group ids   :  ${group_ids}"
@@ -13,14 +14,12 @@ echo "screenshot4 :  ${screenshot4}"
 echo "screenshot5 :  ${screenshot5}"
 echo "changelog   :  ${changelog}"
 
-function getJSONValue {    
+function getJSONValue {
     cat "$1" | grep "$2" | sed "s/.*\"$2\"[^:]*:[^\"]*\"\([^\"]*\)\".*/\1/"
 }
 
 # Environment settings
 THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-APPALOOSA_SERVER="https://www.appaloosa-store.com/api/v1"
 
 # Error
 if [ -z "$user_email" ] && [ -z "$appaloosa_api_key" ]; then
@@ -39,7 +38,7 @@ fi
 
 # With e-mail address
 if [[ -z "$appaloosa_api_key" ]] && [[ -n "$user_email" ]];then
-  RESP=`curl -H "Content-Type: application/json" -X POST $APPALOOSA_SERVER/upload_services/create_an_account?email=$user_email`
+  RESP=`curl -H "Content-Type: application/json" -X POST $end_path/upload_services/create_an_account?email=$user_email`
 
   #email unique?
   echo $RESP > response_account
@@ -49,7 +48,7 @@ if [[ -z "$appaloosa_api_key" ]] && [[ -n "$user_email" ]];then
     echo $ERR
     exit 1
   fi
-  
+
   appaloosa_api_key=`getJSONValue response_account api_key`
   store_id=`getJSONValue response_account store_id`
 fi
@@ -57,7 +56,7 @@ fi
 # upload on S3
 source $THIS_SCRIPT_DIR/upload_to_s3.sh
 # get ipa_path
-S3_IPA_PATH=`curl -H "Content-Type: application/json" -X GET --data '{"store_id":"'"$store_id"'", "key":"'"$path"'"}' $APPALOOSA_SERVER/$store_id/upload_services/url_for_download?api_key=$appaloosa_api_key`
+S3_IPA_PATH=`curl -H "Content-Type: application/json" -X GET --data '{"store_id":"'"$store_id"'", "key":"'"$path"'"}' $end_path/$store_id/upload_services/url_for_download?api_key=$appaloosa_api_key`
 echo $S3_IPA_PATH > path_url
 
 echo $S3_IPA_PATH > s3_path
@@ -71,7 +70,7 @@ if [[ -n $ERR ]];then
 fi
 
 # upload on Appaloosa
-UPLOAD=`curl -H "Content-Type: application/json" -X POST --data '{ "application": { "binary_path": "'"$S3_IPA_PATH"'", "description": '"$(ruby $THIS_SCRIPT_DIR/json_dumper.rb "$description")"', "group_ids": "'"$group_ids"'", "screenshot1": "'"$screenshot1"'", "screenshot2": "'"$screenshot2"'", "screenshot3": "'"$screenshot3"'", "screenshot4": "'"$screenshot4"'", "screenshot5": "'"$screenshot5"'", "changelog": '"$(ruby $THIS_SCRIPT_DIR/json_dumper.rb "$changelog")"'}, "provider": "bitrise"}' $APPALOOSA_SERVER/$store_id/applications/upload?api_key=$appaloosa_api_key`
+UPLOAD=`curl -H "Content-Type: application/json" -X POST --data '{ "application": { "binary_path": "'"$S3_IPA_PATH"'", "description": '"$(ruby $THIS_SCRIPT_DIR/json_dumper.rb "$description")"', "group_ids": "'"$group_ids"'", "screenshot1": "'"$screenshot1"'", "screenshot2": "'"$screenshot2"'", "screenshot3": "'"$screenshot3"'", "screenshot4": "'"$screenshot4"'", "screenshot5": "'"$screenshot5"'", "changelog": '"$(ruby $THIS_SCRIPT_DIR/json_dumper.rb "$changelog")"'}, "provider": "bitrise"}' $end_path/$store_id/applications/upload?api_key=$appaloosa_api_key`
 
 echo $UPLOAD
 echo $UPLOAD > upload

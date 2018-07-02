@@ -58,6 +58,7 @@ workflows:
           file if you would not specify another value.
         run_if: true
         inputs:
+        - end_path: $end_path
         - appaloosa_api_key: $appaloosa_api_key
         - store_id: $store_id
         - bitrise_ipa_path: $bitrise_ipa_path

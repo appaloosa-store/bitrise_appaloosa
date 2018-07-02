@@ -46,6 +46,14 @@ inputs:
     is_required: false
     is_expand: true
     is_dont_change_value: false
+- env_path:
+  opts:
+    title: End path for debugging purpose
+    description: "***Specify path of the server***"
+    summary: "Only for debugging purpose"
+    is_required: true
+    is_expand: true
+    is_dont_change_value: false
 - appaloosa_api_key:
   opts:
     title: User API Key
