@@ -2,7 +2,7 @@
 require 'json'
 class FilenameExtractor
   class << self
-    SUPPORTED_EXTENSIONS = %w(.ipa .apk)
+    SUPPORTED_EXTENSIONS = %w(.ipa .apk .aab)
 
     def process!
       binary_path = ARGV.first

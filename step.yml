@@ -1,11 +1,11 @@
 title: Publish to Appaloosa Store
 summary: This step allows you to publish your application to your private app store on Appaloosa Store
 description: |
-  Bitrise Step to Deploy an iOS .ipa or Android .apk to Appaloosa-Store.
+  Bitrise Step to Deploy an iOS .ipa or Android (.apk or .aab) to Appaloosa-Store.
 
   Required:
     For iOS: an Xcode Archive Step should run before this Step!
-    For Android: an apk should exist
+    For Android: an APK or AAB should have been generated before this step
 
   This step requires an Appaloosa-Store account or an email address to create your account
 website: https://www.appaloosa-store.com
